@@ -1,0 +1,17 @@
+{% load socialaccount %}
+<html>
+  <head>
+    <title>Twitter Clone</title>
+  </head>
+  <body>
+    <h1>Home</h1>
+    {% if user.is_authenticated %}
+    <p>Welcome {{ user.username }} !!!</p>
+    <p><a href="{% url 'account_logout' %}">Log out</a>
+    {% else %}
+    <p><a href="{% url 'account_signup' %}">Sign Up</a></p>
+    <p><a href="{% url 'account_login' %}">Log In </a></p>
+    <p><a href="{% provider_login_url 'google' %}">Log In with Google</a></p>
+    {% endif %}
+  </body>
+</html>
