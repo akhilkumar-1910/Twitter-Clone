@@ -16,10 +16,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <form method="post" action="{% url 'my_tweets' %}">
               {% csrf_token %}
               <input type="hidden" value="{{user.username}}" name="username">
@@ -44,7 +44,18 @@
     </nav>
     <main>
       <div class="container-fluid">
-        {% for tweet in all_tweets %}
+        <div class="card mt-2">
+          <br>
+          <h5>Post new tweet</h5>
+          <form method="post" action="{% url 'create_tweet' %}">
+            {% csrf_token %}
+            <input type="hidden" value="{{ user.username }}" name="username">
+            <textarea rows="3" cols="50" name="message"></textarea>
+            <textarea rows="1" cols="50" name="tag" placeholder="Add tags seperated by spaces"></textarea>
+            <input type="submit">
+          </form>
+        </div>
+        {% for tweet in user_tweets %}
         <div class="card mt-2">
           <div class="mx-2 my-2">
             <p>{{ tweet.message }}</p>
