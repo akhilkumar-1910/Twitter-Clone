@@ -53,6 +53,15 @@
         <div class="card mt-2">
           <div class="mx-2 my-2">
             <p>{{ tweet.message }}</p>
+            <form method="post" action="{% url 'edit_tweet' %}">
+              {% csrf_token %}
+              <div id="{{tweet.id}}" style="display: none;">
+                <textarea rows="3" cols="50" name="edited_tweet">
+                </textarea>
+                <input type="hidden" value="{{tweet.id}}" name="tweet_id">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
             <p>Posted by {{tweet.user.username}}</p>
             <p>Posted at {{tweet.posted}}</p>
             <p>Last edited at {{tweet.last_edited}}</p>
@@ -61,11 +70,22 @@
               <input type="hidden" value="{{tweet.id}}" name="tweet_id">
               <button type="submit" class="btn btn-primary">Delete tweet</button>
             </form>
+            <br>
+            <button type="button" class="btn btn-primary" onclick="edit({{tweet.id}})">Edit</button>
+            <button type="button" class="btn btn-primary" onclick="cancel_edit({{tweet.id}})">Cancel</button>
           </div>
         </div>
         {% endfor %}
       </div>
     </main>
+    <script>
+      function edit(tweet_id){
+        document.getElementById(tweet_id).style.display = "block";
+      }
+      function cancel_edit(tweet_id){
+        document.getElementById(tweet_id).style.display = "none";
+      }
+    </script>
     {% else %}
     <div class="container-fluid mt-4">
       <div class="row">

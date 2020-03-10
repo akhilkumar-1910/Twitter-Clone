@@ -45,3 +45,14 @@ def remove_tweet(request):
         return redirect('my_tweets')
     else:
         return redirect('my_tweets')
+
+def edit_tweet(request):
+    if request.method == "POST":
+        tweet_id = request.POST.get("tweet_id")
+        tweet = Tweet.objects.get(id=tweet_id)
+        new_message = request.POST.get("edited_tweet")
+        tweet.message = new_message
+        tweet.save()
+        return redirect('my_tweets')
+    else:
+        return redirect('my_tweets')
