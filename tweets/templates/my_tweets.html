@@ -20,11 +20,7 @@
             <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
-            <form method="post" action="{% url 'my_tweets' %}">
-              {% csrf_token %}
-              <input type="hidden" value="{{user.username}}" name="username">
-              <button type="submit" class="nav-link">My Tweets</button>
-            </form>
+            <a class="nav-link" href="{% url 'my_tweets' %}">My Tweets</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
@@ -32,10 +28,9 @@
               Users
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
+                {% for user in users %}
+                <a class="dropdown-item" href="{% url 'user_tweets' user.username %}">{{ user }}</a>
+                {% endfor %}
             </div>
           </li>
         </ul>
@@ -49,19 +44,23 @@
           <h5>Post new tweet</h5>
           <form method="post" action="{% url 'create_tweet' %}">
             {% csrf_token %}
-            <input type="hidden" value="{{ user.username }}" name="username">
             <textarea rows="3" cols="50" name="message"></textarea>
             <textarea rows="1" cols="50" name="tag" placeholder="Add tags seperated by spaces"></textarea>
             <input type="submit">
           </form>
         </div>
-        {% for tweet in user_tweets %}
+        {% for tweet in my_tweets %}
         <div class="card mt-2">
           <div class="mx-2 my-2">
             <p>{{ tweet.message }}</p>
             <p>Posted by {{tweet.user.username}}</p>
             <p>Posted at {{tweet.posted}}</p>
             <p>Last edited at {{tweet.last_edited}}</p>
+            <form method="post" action="{% url 'remove_tweet' %}">
+              {% csrf_token %}
+              <input type="hidden" value="{{tweet.id}}" name="tweet_id">
+              <button type="submit" class="btn btn-primary">Delete tweet</button>
+            </form>
           </div>
         </div>
         {% endfor %}
