@@ -1,9 +1,10 @@
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 
 app_name = 'users'
+
+
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
@@ -20,4 +21,4 @@ def signup(request):
             return redirect('/tweets/home')
     else:
         form = UserCreationForm
-        return render(request, 'register.html', context={'form':form})
+        return render(request, 'register.html', context={'form': form})
