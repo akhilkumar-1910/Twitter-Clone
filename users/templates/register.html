@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load socialaccount %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -28,6 +29,7 @@
         <input type="submit">
     </form>
     <p>If you already have an account <a href="/accounts/login"><strong>login</strong></a> instead.</p>
+    <p><a href="{% provider_login_url 'google' %}">Log In with Gmail</a></p>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

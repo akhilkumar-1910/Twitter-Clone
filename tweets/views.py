@@ -40,7 +40,7 @@ class UserTweets(ListView):
     template_name = 'user_tweets.html'
 
     def get_queryset(self):
-        queryset = Tweet.objects.filter(user__username=self.kwargs['user'])
+        queryset = Tweet.objects.filter(user__username=self.kwargs['user']).order_by('-last_edited')
         return queryset
 
     def get_context_data(self):
