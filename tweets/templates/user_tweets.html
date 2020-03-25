@@ -7,7 +7,7 @@
   <body>
     {% block content %}
     {% if user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Welcome {{user.username}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" 
       data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
@@ -34,21 +34,31 @@
             </div>
           </li>
         </ul>
-        <a href="{% url 'account_logout' %}">Log out</a>
+        <a class="btn btn-info" href="{% url 'account_logout' %}">Log out</a>
       </div>
     </nav>
     <main>
       <div class="container-fluid">
+        {% if user_tweets %}
         {% for tweet in user_tweets %}
         <div class="card mt-2">
-          <div class="mx-2 my-2">
-            <p>{{ tweet.message }}</p>
-            <p>Posted by {{tweet.user.username}}</p>
-            <p>Posted at {{tweet.posted}}</p>
-            <p>Last edited at {{tweet.last_edited}}</p>
+          <div class="mx-2 my-2 card-body">
+            <h5 class="card-title">{{tweet.username}}</h5>
+            <h6>{{ tweet.content }}&nbsp;&nbsp;&nbsp;&nbsp;
+            {% for tag in tweet.tags %}
+            <span class="hashtag">#{{ tag }}&nbsp;</span>
+            {% endfor %}
+            </h6>
+            <span>posted: {{tweet.posted_at}}</span>
+            <span>edited: {{tweet.last_edited_at}}</span>
           </div>
         </div>
         {% endfor %}
+        {% else %}
+        <br>
+        <br>
+        <h4>No Tweets to show</h4>
+        {% endif %}
       </div>
     </main>
     {% else %}

@@ -1,0 +1,13 @@
+.card{
+    border: 0 solid #91A3AB !important;
+    padding-left: 25rem;
+    padding-right: 25rem;
+}
+
+.hashtag{
+    color: rgb(27, 149, 224)
+}
+
+span{
+    font-size: 0.85rem;
+}

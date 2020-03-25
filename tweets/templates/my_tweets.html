@@ -7,7 +7,7 @@
   <body>
     {% block content %}
     {% if user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Welcome {{user.username}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" 
       data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
@@ -34,56 +34,81 @@
             </div>
           </li>
         </ul>
-        <a href="{% url 'account_logout' %}">Log out</a>
+        <a class="btn btn-info" href="{% url 'account_logout' %}">Log out</a>
       </div>
     </nav>
     <main>
       <div class="container-fluid">
-        <div class="card mt-2">
-          <br>
+        <div class="card">
+          <div class="mx-2 my-2 card-body">
           <h5>Post new tweet</h5>
           <form method="post" action="{% url 'create_tweet' %}">
             {% csrf_token %}
-            <textarea rows="3" cols="50" name="message"></textarea>
+            <textarea rows="3" cols="50" name="message"></textarea><br><br>
             <textarea rows="1" cols="50" name="tag" placeholder="Add tags seperated by spaces"></textarea>
-            <input type="submit">
+            <br><br>
+            <button type="submit" class="btn btn-sm btn-primary">Post</button>
           </form>
+          </div>
         </div>
         {% for tweet in my_tweets %}
         <div class="card mt-2">
-          <div class="mx-2 my-2">
-            <p>{{ tweet.message }}</p>
+          <div class="mx-2 my-2 card-body">
+            <h5 class="card-title">{{tweet.username}}</h5>
+            <h6 id="content_{{tweet.id}}">{{ tweet.content }}&nbsp;&nbsp;&nbsp;&nbsp;
+            {% for tag in tweet.tags %}
+            <span class="hashtag tag_{{tweet.id}}">#{{ tag }}&nbsp;</span>
+            {% endfor %}
+            </h6>
             <form method="post" action="{% url 'edit_tweet' %}">
               {% csrf_token %}
               <div id="{{tweet.id}}" style="display: none;">
-                <textarea rows="3" cols="50" name="edited_tweet">
+                <textarea rows="3" cols="50" name="edited_tweet" id="edit_{{tweet.id}}">
+                </textarea>
+                <textarea rows="1" cols="50" name="edited_tag" id="edit_tag_{{tweet.id}}">
                 </textarea>
                 <input type="hidden" value="{{tweet.id}}" name="tweet_id">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <br>
+                <button type="submit" class="btn btn-sm btn-primary">Post</button>
               </div>
             </form>
-            <p>Posted by {{tweet.user.username}}</p>
-            <p>Posted at {{tweet.posted}}</p>
-            <p>Last edited at {{tweet.last_edited}}</p>
+            <span>posted: {{tweet.posted_at}}</span>
+            <span>edited: {{tweet.last_edited_at}}</span>
+            <br><br>
             <form method="post" action="{% url 'remove_tweet' %}">
               {% csrf_token %}
               <input type="hidden" value="{{tweet.id}}" name="tweet_id">
-              <button type="submit" class="btn btn-primary">Delete tweet</button>
+              <button type="submit" class="btn btn-sm btn-primary">Remove tweet</button>
             </form>
             <br>
-            <button type="button" class="btn btn-primary" onclick="edit({{ tweet.id }})">Edit</button>
-            <button type="button" class="btn btn-primary" onclick="cancel_edit({{ tweet.id} })">Cancel</button>
+            <button type="button" class="btn btn-sm btn-primary" onclick="edit('{{tweet.id}}', '{{tweet.content}}')">Edit</button>
+            <button type="button" class="btn btn-sm btn-primary" onclick="cancel_edit('{{ tweet.id }}')">
+              Cancel</button>
           </div>
         </div>
         {% endfor %}
       </div>
     </main>
     <script>
-      function edit(tweet_id){
+      function edit(tweet_id, tweet_content){
         document.getElementById(tweet_id).style.display = "block";
+        let content = document.getElementById("content_"+tweet_id);
+        content.style.display = "none";
+        document.getElementById("edit_"+tweet_id).innerText = tweet_content;
+        let tags = document.getElementsByClassName("tag_"+tweet_id);
+        tag_content = "";
+        for(let i=0; i<tags.length; i++){
+          if(i>0){
+            tag_content = tag_content+" ";
+          }
+          tag_content = tag_content+tags[i].innerText;
+        }
+        document.getElementById("edit_tag_"+tweet_id).innerText = tag_content.substring(1);
       }
       function cancel_edit(tweet_id){
         document.getElementById(tweet_id).style.display = "none";
+        let content = document.getElementById("content_"+tweet_id);
+        content.style.display = "block";
       }
     </script>
     {% else %}
