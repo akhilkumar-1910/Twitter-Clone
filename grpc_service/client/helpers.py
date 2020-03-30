@@ -1,21 +1,53 @@
 from . import twitter_clone_stub
 
 
-def get_all_tweets(stub):
-    return twitter_clone_stub.get_all_tweets(stub)
+def get_all_tweets():
+    tweets = twitter_clone_stub.get_all_tweets()
+    all_tweets = [
+        {
+            "id": tweet.id,
+            "username": tweet.username,
+            "content": tweet.content,
+            "posted_at": tweet.posted_at.ToDatetime(),
+            "last_edited_at": tweet.last_edited_at.ToDatetime(),
+            "tags": tweet.tag,
+        }
+        for tweet in tweets
+    ]
+    return all_tweets
 
 
-def get_tweets(stub, username):
-    return twitter_clone_stub.get_tweets(stub, username)
+def get_tweets(username):
+    tweets = twitter_clone_stub.get_tweets(username)
+    all_tweets = [
+        {
+            "id": tweet.id,
+            "username": tweet.username,
+            "content": tweet.content,
+            "posted_at": tweet.posted_at.ToDatetime(),
+            "last_edited_at": tweet.last_edited_at.ToDatetime(),
+            "tags": tweet.tag,
+        }
+        for tweet in tweets
+    ]
+    return all_tweets
 
 
-def create_tweet(stub, username, content, tags):
-    return twitter_clone_stub.create_tweet(stub, username, content, tags)
+def create_tweet(username, content, tags):
+    tweet = twitter_clone_stub.create_tweet(username, content, tags)
+    tweet_new = {
+        "username": tweet.username,
+        "content": tweet.content,
+        "posted_at": tweet.posted_at,
+        "last_edited_at": tweet.last_edited_at,
+        "tags": tweet.tag,
+    }
+    return tweet_new
 
 
-def remove_tweet(stub, tweet_id):
-    twitter_clone_stub.remove_tweet(stub, tweet_id)
+def remove_tweet(tweet_id):
+    twitter_clone_stub.remove_tweet(tweet_id)
 
 
-def edit_tweet(stub, tweet_id, new_content, new_tags):
-    twitter_clone_stub.edit_tweet(stub, tweet_id, new_content, new_tags)
+def edit_tweet(tweet_id, new_content, new_tags):
+    twitter_clone_stub.edit_tweet(tweet_id, new_content, new_tags)
