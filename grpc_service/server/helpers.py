@@ -1,65 +1,74 @@
-from database import twitter_clone_db
+from grpc_service.database.twitter_clone_db import TwitterCloneDB
+
+# from database.twitter_clone_db import TwitterCloneDB
 from google.protobuf.timestamp_pb2 import Timestamp
-from proto.twitter_clone_pb2 import Tweet
+from grpc_service.proto.twitter_clone_pb2 import Tweet
+
+# from proto.twitter_clone_pb2 import Tweet
 
 
-def get_all_tweets():
-    tweets = twitter_clone_db.get_all_tweets()
-    t1 = Timestamp()
-    t2 = Timestamp()
-    all_tweets = []
-    for tweet in tweets:
-        if tweet.posted_at is not None:
-            t1.FromDatetime(tweet.posted_at)
-        if tweet.last_edited_at is not None:
-            t2.FromDatetime(tweet.last_edited_at)
-        else:
-            t2 = t1
-        ret_tweet = Tweet(
-            id=tweet.id,
-            username=tweet.username,
-            content=tweet.content,
-            posted_at=t1,
-            last_edited_at=t2,
+class Helper:
+    def __init__(self, twitter_clone_db=None):
+        self.all_tweets = []
+        self.twitter_clone_db = twitter_clone_db or TwitterCloneDB()
+
+    def get_all_tweets(self):
+        tweets = self.twitter_clone_db.get_all_tweets()
+        t1 = Timestamp()
+        t2 = Timestamp()
+        for tweet in tweets:
+            if tweet.posted_at is not None:
+                t1.FromDatetime(tweet.posted_at)
+            if tweet.last_edited_at is not None:
+                t2.FromDatetime(tweet.last_edited_at)
+            else:
+                t2 = t1
+            ret_tweet = Tweet(
+                id=tweet.id,
+                username=tweet.username,
+                content=tweet.content,
+                posted_at=t1,
+                last_edited_at=t2,
+            )
+            for tag in tweet.tags:
+                ret_tweet.tag.append(tag.tag)
+            self.all_tweets.append(ret_tweet)
+        return self.all_tweets
+
+    def get_tweets(self, request):
+        tweets = self.twitter_clone_db.get_tweets(request.username)
+        t1 = Timestamp()
+        t2 = Timestamp()
+        for tweet in tweets:
+            if tweet.posted_at is not None:
+                t1.FromDatetime(tweet.posted_at)
+            if tweet.last_edited_at is not None:
+                t2.FromDatetime(tweet.last_edited_at)
+            else:
+                t2 = t1
+            ret_tweet = Tweet(
+                id=tweet.id,
+                username=tweet.username,
+                content=tweet.content,
+                posted_at=t1,
+                last_edited_at=t2,
+            )
+            for tag in tweet.tags:
+                ret_tweet.tag.append(tag.tag)
+            self.all_tweets.append(ret_tweet)
+        return self.all_tweets
+
+    def create_tweet(self, request):
+        response = self.twitter_clone_db.create_tweet(
+            request.username, request.content, request.tag
         )
-        for tag in tweet.tags:
-            ret_tweet.tag.append(tag.tag)
-        all_tweets.append(ret_tweet)
-    return all_tweets
+        return response
 
+    def remove_tweet(self, request):
+        self.twitter_clone_db.remove_tweet(request.id)
 
-def get_tweets(request):
-    tweets = twitter_clone_db.get_tweets(request)
-    t1 = Timestamp()
-    t2 = Timestamp()
-    all_tweets = []
-    for tweet in tweets:
-        if tweet.posted_at is not None:
-            t1.FromDatetime(tweet.posted_at)
-        if tweet.last_edited_at is not None:
-            t2.FromDatetime(tweet.last_edited_at)
-        else:
-            t2 = t1
-        ret_tweet = Tweet(
-            id=tweet.id,
-            username=tweet.username,
-            content=tweet.content,
-            posted_at=t1,
-            last_edited_at=t2,
+    def edit_tweet(self, request):
+        response = self.twitter_clone_db.edit_tweet(
+            request.id, request.content, request.tag
         )
-        for tag in tweet.tags:
-            ret_tweet.tag.append(tag.tag)
-        all_tweets.append(ret_tweet)
-    return all_tweets
-
-
-def create_tweet(request):
-    twitter_clone_db.create_tweet(request)
-
-
-def remove_tweet(request):
-    twitter_clone_db.remove_tweet(request)
-
-
-def edit_tweet(request):
-    twitter_clone_db.edit_tweet(request)
+        return response

@@ -1,55 +1,91 @@
 import grpc
 from grpc_service.proto.twitter_clone_pb2 import Tweet
-from grpc_service.proto import twitter_clone_pb2_grpc
+from grpc_service.proto.twitter_clone_pb2_grpc import TweetServiceStub
 
 
-def get_all_tweets():
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = twitter_clone_pb2_grpc.TweetServiceStub(channel)
+class TwitterCloneStub:
+
+    def __init__(self, stub=None):
+        self.channel = grpc.insecure_channel("localhost:50051")
+        self.stub = stub or TweetServiceStub(self.channel)
+        self.all_tweets = []
+
+    def get_all_tweets(self):
         tweet = Tweet()
-        tweets = stub.GetAllTweets(tweet)
-        all_tweets = [tweet for tweet in tweets]
-        return all_tweets
+        try:
+            tweets = self.stub.GetAllTweets(tweet)
+            self.all_tweets = [tweet for tweet in tweets]
+            return self.all_tweets
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("grpc server unavailable")
+                return self.all_tweets
 
-
-def get_tweets(username):
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = twitter_clone_pb2_grpc.TweetServiceStub(channel)
+    def get_tweets(self, username):
         tweet = Tweet(username=username)
-        tweets = stub.GetTweets(tweet)
-        all_tweets = [tweet for tweet in tweets]
-        return all_tweets
+        try:
+            tweets = self.stub.GetTweets(tweet)
+            self.all_tweets = [tweet for tweet in tweets]
+            return self.all_tweets
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("grpc server unavailable")
+                return self.all_tweets
 
-
-def create_tweet(username, content, tags):
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = twitter_clone_pb2_grpc.TweetServiceStub(channel)
+    def create_tweet(self, username, content, tags):
         tweet = Tweet(
             username=username,
             content=content,
         )
         for tag in tags:
             tweet.tag.append(tag)
-        tweet_new = stub.CreateTweet(tweet)
-        return tweet_new
+        try:
+            tweet_new = self.stub.CreateTweet(tweet)
+            return tweet_new
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("grpc server unavailable")
+                return tweet
+            else:
+                print("Here in else")
+                print(e.code())
+                print(e.details())
+                return tweet
 
-
-def remove_tweet(tweet_id):
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = twitter_clone_pb2_grpc.TweetServiceStub(channel)
+    def remove_tweet(self, tweet_id):
         tweet = Tweet(
             id=tweet_id
         )
-        stub.RemoveTweet(tweet)
+        try:
+            tweet_to_remove = self.stub.RemoveTweet(tweet)
+            return tweet_to_remove
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("grpc server unavailable")
+                return tweet
+            else:
+                print(e.code())
+                print(e.details())
+                return tweet
 
-
-def edit_tweet(tweet_id, new_content, new_tags):
-    with grpc.insecure_channel("localhost:50051") as channel:
-        stub = twitter_clone_pb2_grpc.TweetServiceStub(channel)
+    def edit_tweet(self, tweet_id, new_content, new_tags):
         tweet = Tweet(
             id=tweet_id,
             content=new_content,
         )
         for tag in new_tags:
             tweet.tag.append(tag)
-        stub.EditTweet(tweet)
+        try:
+            tweet_to_edit = self.stub.EditTweet(tweet)
+            return tweet_to_edit
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("grpc server unavailable")
+                return tweet
+            else:
+                print(e.code())
+                print(e.details())
+                return tweet
+
+    def __del__(self):
+        self.channel.close()

@@ -1,26 +1,31 @@
 from proto import twitter_clone_pb2_grpc
-from .helpers import get_all_tweets, get_tweets, create_tweet, remove_tweet, edit_tweet
+from .helpers import Helper
+# import grpc
 
 
 class TweetServicer(twitter_clone_pb2_grpc.TweetServiceServicer):
     def GetAllTweets(self, request, context):
-        all_tweets = get_all_tweets()
+        helper = Helper()
+        all_tweets = helper.get_all_tweets()
         for tweet in all_tweets:
             yield tweet
 
     def GetTweets(self, request, context):
-        all_tweets = get_tweets(request)
+        helper = Helper()
+        all_tweets = helper.get_tweets(request)
         for tweet in all_tweets:
             yield tweet
 
     def CreateTweet(self, request, context):
-        create_tweet(request)
-        return request
+        helper = Helper()
+        response = helper.create_tweet(request)
+        return response
 
     def RemoveTweet(self, request, context):
-        remove_tweet(request)
-        return request
+        helper = Helper()
+        helper.remove_tweet(request)
 
     def EditTweet(self, request, context):
-        edit_tweet(request)
-        return request
+        helper = Helper()
+        response = helper.edit_tweet(request)
+        return response

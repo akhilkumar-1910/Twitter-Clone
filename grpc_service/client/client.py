@@ -1,24 +1,25 @@
-from . import helpers
+from .helpers import Helper
 
 
-def get_all_tweets():
-    all_tweets = helpers.get_all_tweets()
-    return all_tweets
+class Client:
 
+    def __init__(self):
+        self.helper = Helper()
 
-def get_tweets(username):
-    all_tweets = helpers.get_tweets(username)
-    return all_tweets
+    def get_all_tweets(self):
+        all_tweets = self.helper.get_all_tweets()
+        return all_tweets
 
+    def get_tweets(self, username):
+        all_tweets = self.helper.get_tweets(username)
+        return all_tweets
 
-def create_tweet(username, content, tags):
-    tweet_new = helpers.create_tweet(username, content, tags)
-    return tweet_new
+    def create_tweet(self, username, content, tags):
+        tweet_new = self.helper.create_tweet(username, content, tags)
+        return tweet_new
 
+    def remove_tweet(self, tweet_id):
+        self.helper.remove_tweet(tweet_id)
 
-def remove_tweet(tweet_id):
-    helpers.remove_tweet(tweet_id)
-
-
-def edit_tweet(tweet_id, new_content, new_tags):
-    helpers.edit_tweet(tweet_id, new_content, new_tags)
+    def edit_tweet(self, tweet_id, new_content, new_tags):
+        self.helper.edit_tweet(tweet_id, new_content, new_tags)
