@@ -1,12 +1,12 @@
 from unittest.mock import Mock
 import pytest
 from grpc_service.database.twitter_clone_db import TwitterCloneDB
-from .helpers import Helper
+from grpc_service.server.helpers import Helper
 from grpc_service.database import models
 from grpc_service.proto.twitter_clone_pb2 import Tweet
 from google.protobuf.timestamp_pb2 import Timestamp
 import datetime
-import grpc
+# import grpc
 
 
 class TestHelper:

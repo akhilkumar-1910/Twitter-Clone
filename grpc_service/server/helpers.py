@@ -1,10 +1,8 @@
 from grpc_service.database.twitter_clone_db import TwitterCloneDB
-
-# from database.twitter_clone_db import TwitterCloneDB
-from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_service.proto.twitter_clone_pb2 import Tweet
-
+# from database.twitter_clone_db import TwitterCloneDB
 # from proto.twitter_clone_pb2 import Tweet
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 class Helper:
