@@ -81,11 +81,15 @@ WSGI_APPLICATION = 'twitter_clone.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'Twitter',
+    #     'USER': 'dbuser',
+    #     'PASSWORD': 'dbuser@123',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Twitter',
-        'USER': 'dbuser',
-        'PASSWORD': 'dbuser@123',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'TwitterClone.db',
     }
 }
 
@@ -136,7 +140,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 1
+SITE_ID = 2
 LOGIN_REDIRECT_URL = '/tweets/home'
 LOGOUT_REDIRECT_URL = '/tweets/home'
 

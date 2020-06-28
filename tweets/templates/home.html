@@ -57,13 +57,9 @@
     </main>
     {% else %}
     <div class="container-fluid mt-4">
-      <div class="row">
-        <div class="card offset-4 col-md-4">
-          <p class="mt-2"><a href="{% url 'sign_up' %}">Sign Up</a></p>
-          <p><a href="{% url 'account_login' %}">Log In </a></p>
-          <p><a href="{% provider_login_url 'google' %}">Log In with Google</a></p>
-        </div>
-      </div>
+      <p></p><a href="{% url 'sign_up' %}">Sign Up</a></p>
+      <p><a href="{% url 'account_login' %}">Log In </a></p>
+      <p><a href="{% provider_login_url 'google' %}">Log In with Google</a></p>
     </div>
     {% endif %}
     {% endblock %}
