@@ -1,5 +1,5 @@
-from . import models
-from .twitter_clone_db import TwitterCloneDB
+from .. import models
+from ..twitter_clone_db import TwitterCloneDB
 from sqlalchemy.orm.exc import NoResultFound
 import pytest
 

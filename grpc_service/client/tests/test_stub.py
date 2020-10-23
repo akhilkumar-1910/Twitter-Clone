@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import grpc
 from grpc_service.proto.twitter_clone_pb2_grpc import TweetServiceStub
 from grpc_service.proto.twitter_clone_pb2 import Tweet
-from .twitter_clone_stub import TwitterCloneStub
+from ..twitter_clone_stub import TwitterCloneStub
 
 
 class TestTwitterCloneStub:

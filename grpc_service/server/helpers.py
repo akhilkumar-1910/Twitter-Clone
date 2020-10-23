@@ -1,7 +1,5 @@
-from grpc_service.database.twitter_clone_db import TwitterCloneDB  # for tests
-from grpc_service.proto.twitter_clone_pb2 import Tweet  # for tests
-# from database.twitter_clone_db import TwitterCloneDB  # for grpc_server
-# from proto.twitter_clone_pb2 import Tweet  # for grpc_server
+from database.twitter_clone_db import TwitterCloneDB  # for grpc_server
+from proto.twitter_clone_pb2 import Tweet  # for grpc_server
 from google.protobuf.timestamp_pb2 import Timestamp
 
 

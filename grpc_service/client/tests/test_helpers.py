@@ -1,8 +1,7 @@
 from unittest.mock import Mock
-import pytest
 from grpc_service.proto.twitter_clone_pb2 import Tweet
-from .twitter_clone_stub import TwitterCloneStub
-from .helpers import Helper
+from ..twitter_clone_stub import TwitterCloneStub
+from ..helpers import Helper
 
 
 class TestHelper:
