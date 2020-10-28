@@ -16,7 +16,7 @@ class Helper():
                     "content": tweet.content,
                     "posted_at": tweet.posted_at.ToDatetime(),
                     "last_edited_at": tweet.last_edited_at.ToDatetime(),
-                    "tags": tweet.tag,
+                    "tags": list(tweet.tag),
                 }
                 for tweet in tweets
             ]
@@ -32,7 +32,7 @@ class Helper():
                     "content": tweet.content,
                     "posted_at": tweet.posted_at.ToDatetime(),
                     "last_edited_at": tweet.last_edited_at.ToDatetime(),
-                    "tags": tweet.tag,
+                    "tags": list(tweet.tag),
                 }
                 for tweet in tweets
             ]
