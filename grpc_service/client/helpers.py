@@ -45,7 +45,7 @@ class Helper():
             "content": tweet.content,
             "posted_at": tweet.posted_at,
             "last_edited_at": tweet.last_edited_at,
-            "tags": tweet.tag,
+            "tags": list(tweet.tag),
         }
         return tweet_new
 
