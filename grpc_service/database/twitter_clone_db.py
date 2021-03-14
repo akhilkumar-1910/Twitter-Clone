@@ -7,9 +7,9 @@ import os
 
 class TwitterCloneDB:
 
-    dbuser = os.environ.get("dbuser")
-    dbpassword = os.environ.get("dbpassword")
-    dbhost = os.environ.get("dbhost")
+    dbuser = os.environ.get("dbuser", "dbuser")
+    dbpassword = os.environ.get("dbpassword", "dbuser@123")
+    dbhost = os.environ.get("dbhost", "localhost")
 
     def __init__(self, db_session=None):
         if db_session:

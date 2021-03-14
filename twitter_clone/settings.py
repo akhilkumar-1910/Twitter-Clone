@@ -42,16 +42,23 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+
+    # 3rd party apps
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
+
+    # local apps
     "tweets",
     "users",
     "grpc_service",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
-    "rest_framework",
-    "corsheaders",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ]
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -97,7 +104,7 @@ DATABASES = {
     # }
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "TwitterClone.db",
+        "NAME": "TwitterClone_db",
     }
 }
 
@@ -142,24 +149,3 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-SITE_ID = 2
-LOGIN_REDIRECT_URL = "/tweets/home"
-LOGOUT_REDIRECT_URL = "/tweets/home"
-
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": [
-            "profile",
-            "email",
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "online",
-        },
-    }
-}

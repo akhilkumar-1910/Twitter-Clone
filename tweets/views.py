@@ -1,15 +1,16 @@
-from django.shortcuts import redirect
-from django.views.generic import ListView
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from grpc_service.client.client import Client
 
 
 class Home(APIView):
     """ Home consists of all the tweets """
+
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         grpc_client = Client()

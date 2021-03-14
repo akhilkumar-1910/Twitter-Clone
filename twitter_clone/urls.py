@@ -22,7 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='accounts/login', permanent=True)),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('allauth.urls')),
     path('tweets/', include('tweets.urls')),
     path('users/', include('users.urls')),
 ]
